@@ -46,6 +46,9 @@ def display_list(items):
     except KeyboardInterrupt:
         return
 
+
+
+
 def get_levenshtein_distance(a: list[str], b: list[str], a_idx: int = 0, b_idx: int = 0) -> int:
     """
         Depth first levenshtein distance implementation that calculates iteratively
@@ -97,8 +100,8 @@ def load_dictionary() -> set[str]:
 def main() -> None:
     words = load_dictionary()
 
-    if len(argv) == 3:
-        input_str = argv[2]
+    if len(argv) == 2:
+        input_str = argv[1]
     else:
         input_str = input("Enter a word: ")
     if not (input_str and input_str.isalpha()):
