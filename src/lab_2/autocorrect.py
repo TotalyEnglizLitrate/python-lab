@@ -22,7 +22,12 @@ def display_list(items):
     def show_item(index):
         item = items[index]
         console.clear()
-        console.print(Text(f"Did you mean {item[0]}", justify="center"))
+        console.print(
+            Text(
+                f"Did you mean {item[0]}"
+                f"\nDistance: {item[1]}"
+                , justify="center")
+            )
 
     @bindings.add('up')
     def up(event):
@@ -54,13 +59,10 @@ def get_levenshtein_distance(a: list[str], b: list[str], a_idx: int = 0, b_idx: 
         Depth first levenshtein distance implementation that calculates iteratively
         Distance is defined as the minimum number of insertions (or) deletions (or) substitutions
         which is needed to transform one string into another
-
-        returns early if distance > half the word length of a at any given point
     """
     # distances is a matrix of levenshtein distances where each element ij of distances
     # represents the distance between the first i characters in a and the first j characters in b
     distances = np.zeros((len(a) + 1, len(b) + 1), dtype=int)
-    max_distance = ceil(len(a) / 4 * 3)
 
     distances[:, 0] = np.arange(len(a) + 1)
     distances[0, :] = np.arange(len(b) + 1)
@@ -70,10 +72,7 @@ def get_levenshtein_distance(a: list[str], b: list[str], a_idx: int = 0, b_idx: 
             if a[i - 1] == b[j - 1]:
                 distances[i, j] = distances[i - 1][j - 1]
             else:
-                distances[i, j] = 1 + min(distances[i - 1, j], distances[i, j - 1], distances[i - 1, j - 1])\
-    
-            if distances[i][j] > max_distance:
-                return max_distance + 1
+                distances[i, j] = 1 + min(distances[i - 1, j], distances[i, j - 1], distances[i - 1, j - 1])
 
     return distances[len(a), len(b)]
 
@@ -110,7 +109,7 @@ def main() -> None:
 
     print("Use up or down arrows to navigate between suggestions, ctrl+c to exit")
     time.sleep(3)
-    display_list(corrections[:100])
+    display_list(corrections)
 
 
 if __name__ == "__main__":
