@@ -4,19 +4,21 @@
 
 
 def check_leap_year(year):
-    chk = tuple(map(lambda x: year % x, (4, 100, 400)))
-    if chk[2] == True:
+    chk = tuple(map(lambda x: not (year % x), (4, 100, 400)))
+    if chk[2]:
         return True
-    elif chk[1] == True:
+    elif chk[1]:
         return False
-    elif chk[0] == True:
+    elif chk[0]:
         return True
-    
+
     return False
+
 
 def main():
     year = int(input("Enter a year: "))
     print(f"{year} is{' ' if check_leap_year(year) else ' not '} a leap year")
+
 
 if __name__ == "__main__":
     main()

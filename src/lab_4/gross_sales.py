@@ -3,10 +3,12 @@
     using Python in script mode.
 """
 
+
 def main():
-    price, qty = map(float, input("Enter price and quantity: ").split())
+    price, qty = map(int, input("Enter price and quantity: ").split())
     gross = price * qty
     print(f"Total sales: {gross}")
+
 
 if __name__ == "__main__":
     main()

@@ -10,28 +10,26 @@ import math
 def ar_trngl(base: float, height: float) -> float:
     return ar_parallelogram(base, height) / 2
 
+
 def ar_parallelogram(base: float, height: float) -> float:
     return base * height
 
+
 def total_ar_cone(base_r: float, height: float) -> float:
-    slant = math.sqrt(base_r ** 2 + height ** 2)
-    return math.pi * base_r  * (base_r + slant)
+    slant = math.sqrt(base_r**2 + height**2)
+    return math.pi * base_r * (base_r + slant)
+
 
 def ar_sphere(radius: float) -> float:
-    return 4 * math.pi * radius ** 2
+    return 4 * math.pi * radius**2
+
 
 def ar_rect_prism(length: float, breadth: float, height: float) -> float:
     return 2 * (length * height + length * breadth + breadth * height)
 
+
 def menu():
-    print(
-    "1. Triangle",
-    "2. Parallelogram",
-    "3. Cone",
-    "4. Sphere",
-    "5. Cuboid",
-    "0. Exit"
-    )
+    print("1. Triangle", "2. Parallelogram", "3. Cone", "4. Sphere", "5. Cuboid", "0. Exit", sep="\n")
     choice = int(input("Enter choice: "))
 
     if choice == 0:
@@ -59,6 +57,8 @@ def menu():
     else:
         print("Invalid choice!")
 
+
 if __name__ == "__main__":
     while True:
         menu()
+        print("\n")

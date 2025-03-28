@@ -5,12 +5,15 @@
     places.
 """
 
+
 def compound_interest(principal: float, rate: float, time: float, n: int = 1):
     assert n > 0, "Number of times interest is compunded must be positive"
-    return (principal * rate / (n * 100)) ** (n * time)
+    return principal * (1 + rate / (n * 100)) ** (n * time) - principal
+
 
 def simple_interest(principal: float, rate: float, time: float):
     return principal * rate * time / 100
+
 
 def main():
     p = float(input("Enter principal: "))
@@ -20,6 +23,7 @@ def main():
 
     print(f"Simple interest: {simple_interest(p, r, t):.4f}")
     print(f"Compound interest: {compound_interest(p, r, t, n):.4f}")
+
 
 if __name__ == "__main__":
     main()
