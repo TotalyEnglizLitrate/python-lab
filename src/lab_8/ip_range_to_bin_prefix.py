@@ -46,6 +46,7 @@ def binary_prefix_range(r: range) -> list[str]:
 
 
 def main():
+    # example: fw1.rl, ensure it is placed in same directory as this script
     with open(Path(__file__).parent / "fw1.rl") as in_fl:
         data = [x.split(":") for x in in_fl.readlines()]
 
@@ -56,6 +57,8 @@ def main():
             int(tmp[0][2]), int(tmp[1][0]) + 1
             ))
 
+    # output the ranges and their corresponding binary prefix strings to a file
+    # example: fw1.rl.processed
     with open(Path(__file__).parent / "fw1.rl.processed", "w") as out_fl:
         for rng in out_data:
             out_fl.write(f"{rng.start} : {rng.stop - 1} - ")
