@@ -1,34 +1,48 @@
+from functools import cache
 from pathlib import Path
-from re import compile
+from typing import Optional, Self
 
-def get_bin(n: int, fill: int) -> str:
-    return bin(n)[2:].zfill(fill)
+class BinaryPrefixString:
+    def __init__(self, x: int, suffix: Optional[int] = None) -> None:
+        self.value = x
+        self.suffix = suffix or 0
 
-def binary_prefix_range(r):
-    fill = 16
-    bin_strs = set((get_bin(x, fill) for x in r))
-    suffix = ""
+    def __str__(self) -> str:
+        return bin(self.value)[2:].zfill(16 - self.suffix) + "*" * self.suffix
+
+    def __repr__(self):
+        return "\"" + str(self) + "\""
+    
+    def __hash__(self) -> int:
+        return self.value << len(str(self.suffix)) + self.suffix
+
+    def __eq__(self, other: Self):
+        if not isinstance(other, BinaryPrefixString):
+            return False
+        return self.value == other.value and self.suffix == other.suffix
+    
+
+
+@cache # Cache the results of the function so as to not to recompute them
+def binary_prefix_range(r: range) -> list[str]:
+    bin_strs = set(BinaryPrefixString(x) for x in r)
     while True:
+        changed = False
         for i in bin_strs.copy():
-            if not i:
-                break
-            _i = int(i, base=2)
-            if _i & 1:
-                if (pred_i := get_bin(_i - 1, fill - len(suffix))) in bin_strs:
-                    bin_strs.remove(i)
-                    bin_strs.remove(pred_i)
-                    to_add = list(i)
-                    to_add[-1] = "*"
-                    bin_strs.add("".join(to_add))
+            if i.value & 1 and BinaryPrefixString(i.value - 1, i.suffix) in bin_strs:
+                changed = True
+                bin_strs.remove(i)
+                bin_strs.remove(BinaryPrefixString(i.value - 1, i.suffix))
+                
+                # add back the combined binary prefix string after removing the
+                # two strings being combined
+                bin_strs.add(BinaryPrefixString(i.value >> 1, i.suffix + 1))
 
-        
-        if all(x.endswith("*") for x in bin_strs):
-            bin_strs = {x[:-1] for x in bin_strs}
-            suffix += "*"
-        else:
+        if not changed:
             break
 
-    return sorted((x +  suffix for x in bin_strs))
+    
+    return sorted(bin_strs, key=lambda x: str(x))
 
 
 def main():
@@ -49,5 +63,4 @@ def main():
             out_fl.write("\n")
 
 if __name__ == "__main__":
-    # main()
-    print(len(binary_prefix_range(range(1, 65534))))
+    main()
