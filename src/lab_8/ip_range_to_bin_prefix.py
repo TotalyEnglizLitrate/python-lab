@@ -10,11 +10,10 @@ class BinaryPrefixString:
     def __str__(self) -> str:
         return bin(self.value)[2:].zfill(16 - self.suffix) + "*" * self.suffix
 
-    def __repr__(self):
-        return "\"" + str(self) + "\""
+    __repr__ = __str__
     
     def __hash__(self) -> int:
-        return self.value << len(str(self.suffix)) + self.suffix
+        return (self.value << (len(bin(self.suffix)) - 2)) + self.suffix
 
     def __eq__(self, other: Self):
         if not isinstance(other, BinaryPrefixString):
